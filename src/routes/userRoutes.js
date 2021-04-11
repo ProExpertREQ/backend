@@ -4,7 +4,7 @@ import userController from '../controllers/UserController';
 
 const router = new Router();
 
-router.get('/', loginRequired, userController.index);
+router.get('/', userController.index);
 router.get('/:id', loginRequired, userController.show);
 
 router.post('/', userController.store);
