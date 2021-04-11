@@ -23,13 +23,13 @@ class TokenController {
 
     if (!(await user.passwordIsValid(password))) {
       return res.status(401).json({
-        errors: ['Senha inválida.'],
+        errors: ['Senha incorreta.'],
       });
     }
 
-    const { matricula } = user;
+    const { id } = user;
 
-    const token = jwt.sign({ matricula, email }, process.env.TOKEN_SECRET, {
+    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
