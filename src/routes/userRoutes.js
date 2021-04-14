@@ -4,10 +4,10 @@ import userController from '../controllers/UserController';
 
 const router = new Router();
 
-router.get('/get-all', userController.index);
-router.get('/:id', loginRequired, userController.show);
+router.get('/get-all', userController.getAll);
+router.get('/:id', loginRequired, userController.getUserById);
 
-router.post('/create', userController.store);
+router.post('/create', userController.create);
 
 router.put('/update', loginRequired, userController.update);
 router.delete('/delete', loginRequired, userController.delete);

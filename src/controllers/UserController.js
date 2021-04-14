@@ -1,7 +1,8 @@
 import User from '../models/User';
 
 class UserController {
-  async store(req, res) {
+  async create(req, res) {
+    console.log(req.body);
     try {
       const newUser = await User.create(req.body);
 
@@ -19,17 +20,18 @@ class UserController {
     }
   }
 
-  async index(req, res) {
+  async getAll(req, res) {
     try {
       const users = await User.findAll({ attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'] });
 
       return res.json(users);
     } catch (e) {
+      console.log(e)
       return res.json(null);
     }
   }
 
-  async show(req, res) {
+  async getUserById(req, res) {
     try {
       const { id } = req.params;
       const user = await User.findByPk(id);
