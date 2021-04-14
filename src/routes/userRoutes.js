@@ -4,12 +4,12 @@ import userController from '../controllers/UserController';
 
 const router = new Router();
 
-router.get('/', userController.index);
+router.get('/get-all', userController.index);
 router.get('/:id', loginRequired, userController.show);
 
-router.post('/', userController.store);
+router.post('/create', userController.store);
 
-router.put('/', loginRequired, userController.update);
-router.delete('/', loginRequired, userController.delete);
+router.put('/update', loginRequired, userController.update);
+router.delete('/delete', loginRequired, userController.delete);
 
 export default router;
