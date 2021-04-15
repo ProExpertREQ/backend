@@ -24,6 +24,18 @@ class CursoController {
       });
     }
   }
+
+  async getAll(req, res) {
+    try {
+      const cursos = await Curso.findAll({ attributes: ['departamento_id', 'nome'] });
+
+      return res.json(cursos);
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 export default new CursoController();
