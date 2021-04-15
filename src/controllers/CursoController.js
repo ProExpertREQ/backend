@@ -2,14 +2,12 @@ import Departamento from '../models/Departamento';
 import Curso from '../models/Curso';
 
 class CursoController {
-  async store(req, res) {
+  async create(req, res) {
     try {
-      const { id } = req.params;
+      const { departamento_id } = req.params;
       const { nome } = req.body;
 
-      console.log(req.params);
-
-      const departamento = await Departamento.findByPk(id);
+      const departamento = await Departamento.findByPk(departamento_id);
 
       if (!departamento) {
         return res.status(400).json({
@@ -17,14 +15,13 @@ class CursoController {
         });
       }
 
-      const curso = await Curso.create({ nome });
+      const curso = await Curso.create({ departamento_id, nome });
 
-      return res.json({ curso });
+      return res.json(curso);
     } catch (e) {
-      return console.log(e);
-      // return res.status(400).json({
-      //   errors: e.errors.map((err) => err.message),
-      // });
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
     }
   }
 }
