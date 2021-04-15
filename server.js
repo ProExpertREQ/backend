@@ -1,4 +1,5 @@
 import app from './app';
+const cors = require('cors');
 
 const port = 3080;
 

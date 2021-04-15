@@ -8,7 +8,7 @@ import express from 'express';
 const cors = require('cors');
 import homeRoutes from './src/routes/homeRoutes';
 import userRoutes from './src/routes/userRoutes';
-import tokenRoutes from './src/routes/tokenRoutes';
+// import tokenRoutes from './src/routes/tokenRoutes';
 import departamentoRoutes from './src/routes/departamentoRoutes';
 
 class App {
@@ -27,7 +27,7 @@ class App {
   routes() {
     this.app.use('/', homeRoutes);
     this.app.use('/users/', userRoutes);
-    this.app.use('/tokens/', tokenRoutes);
+    // this.app.use('/tokens/', tokenRoutes);
     this.app.use('/departamentos/', departamentoRoutes);
   }
 }
