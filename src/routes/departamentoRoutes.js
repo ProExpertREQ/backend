@@ -10,6 +10,6 @@ router.post('/create', departamentoController.create);
 router.put('/update/:id', departamentoController.update);
 router.delete('/delete/:id', departamentoController.delete);
 
-router.post('/:_departamento_id/cursos/create', cursoController.create);
+router.post('/:departamento_id/cursos/create', cursoController.create);
 
 export default router;
