@@ -25,6 +25,6 @@ export default class Curso extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Departamento, { foreignKey: 'departamento_id', as: 'possuiCurso' });
+    this.belongsTo(models.Departamento, { foreignKey: 'departamento_id', as: 'hasCourse' });
   }
 }
