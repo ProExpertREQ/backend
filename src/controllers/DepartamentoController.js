@@ -1,7 +1,7 @@
 import Departamento from '../models/Departamento';
 
 class DepartamentoController {
-  async store(req, res) {
+  async create(req, res) {
     try {
       const novoDepartamento = await Departamento.create(req.body);
 
@@ -15,7 +15,7 @@ class DepartamentoController {
     }
   }
 
-  async index(req, res) {
+  async getAll(req, res) {
     try {
       const departamentos = await Departamento.findAll({ attributes: ['id', 'nome'] });
 
@@ -29,7 +29,7 @@ class DepartamentoController {
     }
   }
 
-  async show(req, res) {
+  async getDepartamentById(req, res) {
     try {
       const { id } = req.params;
 
