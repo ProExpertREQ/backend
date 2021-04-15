@@ -1,8 +1,8 @@
-// import { Router } from 'express';
-// import cursoController from '../controllers/CursoController';
+import { Router } from 'express';
+import cursoController from '../controllers/CursoController';
 
-// const router = new Router();
+const router = new Router();
 
-// router.post('/', cursoController.store);
+router.get('/get-all', cursoController.getAll);
 
-// export default router;
+export default router;
