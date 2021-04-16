@@ -94,15 +94,13 @@ class CursoController {
 
   async update(req, res) {
     try {
-      const { id } = req.params;
-
-      if (!id) {
+      if (!req.params.id) {
         return res.status(400).json({
           errors: ['O ID do curso não foi encontrado.'],
         });
       }
 
-      const curso = await Curso.findByPk(id);
+      const curso = await Curso.findByPk(req.params.id);
 
       if (!curso) {
         return res.status(400).json({
@@ -110,10 +108,35 @@ class CursoController {
         });
       }
 
-      const novosDados = await curso.update(req.body);
-      const { nome } = novosDados;
+      const { id, nome } = await curso.update(req.body);
 
       return res.json({ id, nome });
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      if (!req.params.id) {
+        return res.status(400).json({
+          errors: ['O ID do curso não foi enviado.'],
+        });
+      }
+
+      const curso = await Curso.findByPk(req.params.id);
+
+      if (!curso) {
+        return res.status(400).json({
+          errors: ['O curso não existe.'],
+        });
+      }
+
+      await curso.destroy();
+
+      return res.json(`O curso '${curso.id} ${curso.nome}' foi deletado.`);
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
