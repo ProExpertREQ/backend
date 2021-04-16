@@ -91,6 +91,35 @@ class CursoController {
       return res.json(null);
     }
   }
+
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        return res.status(400).json({
+          errors: ['O ID do curso não foi encontrado.'],
+        });
+      }
+
+      const curso = await Curso.findByPk(id);
+
+      if (!curso) {
+        return res.status(400).json({
+          errors: ['O curso procurado não existe.'],
+        });
+      }
+
+      const novosDados = await curso.update(req.body);
+      const { nome } = novosDados;
+
+      return res.json({ id, nome });
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 export default new CursoController();
