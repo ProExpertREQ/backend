@@ -3,11 +3,10 @@ import departamentoController from '../controllers/DepartamentoController';
 
 const router = new Router();
 
-router.get('/', departamentoController.index);
-router.get('/:id', departamentoController.show);
-
-router.post('/', departamentoController.store);
-router.put('/:id', departamentoController.update);
-router.delete('/:id', departamentoController.delete);
+router.get('/get-all', departamentoController.getAll);
+router.get('/:id', departamentoController.getDepartamentById);
+router.post('/create', departamentoController.create);
+router.put('/update/:id', departamentoController.update);
+router.delete('/delete/:id', departamentoController.delete);
 
 export default router;
