@@ -65,6 +65,32 @@ class CursoController {
       });
     }
   }
+
+  async getCourseById(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        return res.status(400).json({
+          errors: ['O ID do curso não foi enviado.'],
+        });
+      }
+
+      const curso = await Curso.findByPk(id);
+
+      if (!curso) {
+        return res.status(400).json({
+          errors: ['Esse curso não existe.'],
+        });
+      }
+
+      const { departamento_id, nome } = curso;
+
+      return res.json({ departamento_id, id, nome });
+    } catch (e) {
+      return res.json(null);
+    }
+  }
 }
 
 export default new CursoController();
