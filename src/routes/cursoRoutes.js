@@ -3,6 +3,7 @@ import cursoController from '../controllers/CursoController';
 
 const router = new Router();
 
-router.get('/get-all', cursoController.getAll);
+router.post('/departamentos/:departamento_id/cursos/create', cursoController.create);
+router.get('/cursos/get-all', cursoController.getAll);
 
 export default router;
