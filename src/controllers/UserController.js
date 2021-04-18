@@ -3,7 +3,6 @@ import User from '../models/User';
 
 class UserController {
   async create(req, res) {
-    console.log(req.body);
     try {
       const newUser = await User.create(req.body);
 
@@ -27,7 +26,6 @@ class UserController {
 
       return res.json(users);
     } catch (e) {
-      console.log(e);
       return res.json(null);
     }
   }
