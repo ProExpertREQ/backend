@@ -1,4 +1,5 @@
 import Departamento from '../models/Departamento';
+var cors = require('cors')
 
 class DepartamentoController {
   async create(req, res) {

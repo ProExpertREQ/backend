@@ -1,17 +1,19 @@
+
 import bcryptjs from 'bcryptjs';
+import { next } from 'sucrase/dist/parser/tokenizer';
 import User from '../models/User';
+require('dotenv').config();
+import jwt from 'jsonwebtoken';
 
 class UserController {
   async create(req, res) {
     try {
       const newUser = await User.create(req.body);
-
       const {
-        nome, matricula, departamento, curso, email,
+        nome, departamento, curso, email,
       } = newUser;
-
       return res.json({
-        nome, matricula, departamento, curso, email,
+        message: 'success'
       });
     } catch (e) {
       return res.status(400).json({
@@ -23,7 +25,6 @@ class UserController {
   async getAll(req, res) {
     try {
       const users = await User.findAll({ attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'] });
-
       return res.json(users);
     } catch (e) {
       return res.json(null);
@@ -91,6 +92,40 @@ class UserController {
     }
   }
 
+  async login(req, res) {
+    
+    const { email = '', password = '' } = req.body;
+    console.log(req.body)
+
+    if (!email || !password) {
+      return res.status(401).json({
+        errors: ['Credenciais inválidas.'],
+      });
+    }
+
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({
+        errors: ['Usuário não existe.'],
+      });
+    }
+
+    if (!(await user.passwordIsValid(password))) {
+      return res.status(401).json({
+        errors: ['Senha incorreta.'],
+      });
+    }
+
+    const { id } = user;
+
+    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.TOKEN_EXPIRATION,
+    });
+
+    return res.json({ token , message : 'success' });
+  }
+  
   async changePassword(req, res) {
     try {
       const { oldPassword = '', newPassword = '' } = req.body;
@@ -138,4 +173,6 @@ class UserController {
   }
 }
 
+
 export default new UserController();
+
