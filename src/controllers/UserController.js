@@ -1,3 +1,4 @@
+import bcryptjs from 'bcryptjs';
 import User from '../models/User';
 
 class UserController {
@@ -26,15 +27,14 @@ class UserController {
 
       return res.json(users);
     } catch (e) {
-      console.log(e)
+      console.log(e);
       return res.json(null);
     }
   }
 
   async getUserById(req, res) {
     try {
-      const { id } = req.params;
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(req.userId);
 
       const {
         nome, matricula, departamento, curso, email,
@@ -90,6 +90,52 @@ class UserController {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
       });
+    }
+  }
+
+  async changePassword(req, res) {
+    try {
+      const { oldPassword = '', newPassword = '' } = req.body;
+
+      if (!oldPassword || !newPassword) {
+        return res.status(401).json({
+          errors: ['Credenciais inválidas.'],
+        });
+      }
+
+      if (oldPassword === newPassword) {
+        return res.status(400).json({
+          errors: ['A nova senha é igual a antiga.'],
+        });
+      }
+
+      const user = await User.findByPk(10);
+
+      if (!user) {
+        return res.status(404).json({
+          error: ['O usuário não existe.'],
+        });
+      }
+
+      if (!(await user.passwordIsValid(oldPassword))) {
+        return res.status(401).json({
+          errors: ['Senha incorreta.'],
+        });
+      }
+
+      const password_hash = await bcryptjs.hash(newPassword, 8);
+
+      const updatedUser = await user.update({ password_hash });
+
+      return res.json({
+        nome: updatedUser.nome,
+        matricula: updatedUser.matricula,
+        departamento: updatedUser.departamento,
+        curso: updatedUser.curso,
+        email: updatedUser.email,
+      });
+    } catch (e) {
+      return e;
     }
   }
 }
