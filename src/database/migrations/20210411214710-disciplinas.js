@@ -20,6 +20,7 @@ module.exports = {
       nome: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       codigo: {
         type: Sequelize.STRING,
