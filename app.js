@@ -29,7 +29,7 @@ class App {
     this.app.use('/', homeRoutes);
     this.app.use('/users/', userRoutes);
     // this.app.use('/tokens/', tokenRoutes);
-    this.app.use('/departamentos/', departamentoRoutes);
+    this.app.use('/departments/', departamentoRoutes);
     this.app.use('/', cursoRoutes);
   }
 }
