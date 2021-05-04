@@ -3,10 +3,10 @@ import disciplinaController from '../controllers/DisciplinaController';
 
 const router = new Router();
 
-// router.get('/get-all', departamentoController.getAll);
-// router.get('/:id', departamentoController.getDepartamentById);
+router.get('/get-all', disciplinaController.getAll);
+router.get('/:curso_id', disciplinaController.getDisciplinesByCourse);
 router.post('/:curso_id/create', disciplinaController.create);
-// router.put('/update/:id', departamentoController.update);
-// router.delete('/delete/:id', departamentoController.delete);
+// router.put('/update/:id',);
+// router.delete('/delete/:id',);
 
 export default router;

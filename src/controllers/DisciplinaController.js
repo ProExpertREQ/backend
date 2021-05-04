@@ -31,6 +31,45 @@ class DisciplinaController {
       });
     }
   }
+
+  async getAll(req, res) {
+    try {
+      const disciplinas = await Disciplina.findAll({ attributes: ['id', 'nome'] });
+
+      return res.json(disciplinas);
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
+
+  async getDisciplinesByCourse(req, res) {
+    try {
+      const { curso_id } = req.params;
+
+      const curso = await Curso.findByPk(curso_id);
+
+      if (!curso) {
+        return res.status(400).json({
+          errors: 'O curso não existe.',
+        });
+      }
+
+      const disciplinas = await Disciplina.findAll({
+        where: {
+          curso_id,
+        },
+        attributes: ['id', 'nome'],
+      });
+
+      return res.json({ Curso: curso.nome, disciplinas });
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 export default new DisciplinaController();
