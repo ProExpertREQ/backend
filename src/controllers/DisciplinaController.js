@@ -97,57 +97,57 @@ class DisciplinaController {
     }
   }
 
-  // async update(req, res) {
-  //   try {
-  //     if (!req.params.id) {
-  //       return res.status(400).json({
-  //         errors: ['O ID do curso não foi encontrado.'],
-  //       });
-  //     }
+  async update(req, res) {
+    try {
+      if (!req.params.id) {
+        return res.status(400).json({
+          errors: ['O ID da disciplina não foi encontrado.'],
+        });
+      }
 
-  //     const curso = await Curso.findByPk(req.params.id);
+      const disciplina = await Disciplina.findByPk(req.params.id);
 
-  //     if (!curso) {
-  //       return res.status(400).json({
-  //         errors: ['O curso procurado não existe.'],
-  //       });
-  //     }
+      if (!disciplina) {
+        return res.status(400).json({
+          errors: ['A disciplina procurada não existe.'],
+        });
+      }
 
-  //     const { id, nome } = await curso.update(req.body);
+      const { id, nome } = await disciplina.update(req.body);
 
-  //     return res.json({ id, nome });
-  //   } catch (e) {
-  //     return res.status(400).json({
-  //       errors: e.errors.map((err) => err.message),
-  //     });
-  //   }
-  // }
+      return res.json({ id, nome });
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
 
-  // async delete(req, res) {
-  //   try {
-  //     if (!req.params.id) {
-  //       return res.status(400).json({
-  //         errors: ['O ID do curso não foi enviado.'],
-  //       });
-  //     }
+  async delete(req, res) {
+    try {
+      if (!req.params.id) {
+        return res.status(400).json({
+          errors: ['O ID da disciplina não foi enviado.'],
+        });
+      }
 
-  //     const curso = await Curso.findByPk(req.params.id);
+      const disciplina = await Disciplina.findByPk(req.params.id);
 
-  //     if (!curso) {
-  //       return res.status(400).json({
-  //         errors: ['O curso não existe.'],
-  //       });
-  //     }
+      if (!disciplina) {
+        return res.status(400).json({
+          errors: ['A disciplina não existe.'],
+        });
+      }
 
-  //     await curso.destroy();
+      await disciplina.destroy();
 
-  //     return res.json(`O curso '${curso.id} ${curso.nome}' foi deletado.`);
-  //   } catch (e) {
-  //     return res.status(400).json({
-  //       errors: e.errors.map((err) => err.message),
-  //     });
-  //   }
-  // }
+      return res.json(`A disciplina '${disciplina.id} ${disciplina.nome}' foi deletada.`);
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
 }
 
 export default new DisciplinaController();
