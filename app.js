@@ -33,7 +33,7 @@ class App {
     // this.app.use('/tokens/', tokenRoutes);
     this.app.use('/departamentos/', departamentoRoutes);
     this.app.use('/', cursoRoutes);
-    this.app.use('/disciplinas', disciplinaRoutes);
+    this.app.use('/', disciplinaRoutes);
   }
 }
 
