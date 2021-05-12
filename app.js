@@ -12,6 +12,7 @@ import departamentoRoutes from './src/routes/departamentoRoutes';
 import cursoRoutes from './src/routes/cursoRoutes';
 import disciplinaRoutes from './src/routes/disciplinaRoutes';
 import turmaRoutes from './src/routes/turmaRoutes';
+import disciplinasCursadasRoutes from './src/routes/disciplinasCursadasRoutes';
 
 const cors = require('cors');
 
@@ -33,6 +34,7 @@ class App {
     this.app.use('/users/', userRoutes);
     // this.app.use('/tokens/', tokenRoutes);
     this.app.use('/departments/', departamentoRoutes);
+    this.app.use('/disciplinas-cursadas/', disciplinasCursadasRoutes);
     this.app.use('/', cursoRoutes);
     this.app.use('/', disciplinaRoutes);
     this.app.use('/', turmaRoutes);
