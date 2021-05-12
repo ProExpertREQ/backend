@@ -1,4 +1,5 @@
 import Disciplina from '../models/Disciplina';
+import DisciplinasCursadas from '../models/DisciplinasCursadas';
 import Turma from '../models/Turma';
 
 class TurmaController {
@@ -161,6 +162,29 @@ class TurmaController {
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
+
+  async register(req, res) {
+    try {
+      const user_id = req.userId;
+      const turma_id = req.params.id;
+
+      const turma = await Turma.findByPk(turma_id);
+
+      if (!turma) {
+        return res.status(400).json({
+          errors: ['Essa turma não existe.'],
+        });
+      }
+
+      const disciplinaRegistrada = await DisciplinasCursadas.create({ user_id, turma_id });
+
+      return res.json(disciplinaRegistrada);
+    } catch (error) {
+      return res.status(400).json({
+        errors: ['Não foi possivel registrar-se.'],
       });
     }
   }
