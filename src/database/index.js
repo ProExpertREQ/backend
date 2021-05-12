@@ -5,13 +5,11 @@ import Departamento from '../models/Departamento';
 import Curso from '../models/Curso';
 import Disciplina from '../models/Disciplina';
 import Turma from '../models/Turma';
+import DisciplinasCursadas from '../models/DisciplinasCursadas';
 
-const models = [User, Departamento, Curso, Disciplina, Turma];
+const models = [User, Departamento, Curso, Disciplina, Turma, DisciplinasCursadas];
 
 const connection = new Sequelize(databaseConfig);
 
 models.forEach((model) => model.init(connection));
-
-Curso.associate(connection.models);
-Disciplina.associate(connection.models);
-Turma.associate(connection.models);
+models.forEach((model) => model.associate && model.associate(connection.models));

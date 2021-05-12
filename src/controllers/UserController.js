@@ -1,8 +1,9 @@
-
 import bcryptjs from 'bcryptjs';
 import { next } from 'sucrase/dist/parser/tokenizer';
 import User from '../models/User';
+
 require('dotenv').config();
+
 import jwt from 'jsonwebtoken';
 
 class UserController {
@@ -13,7 +14,7 @@ class UserController {
         nome, departamento, curso, email,
       } = newUser;
       return res.json({
-        message: 'success'
+        message: 'success',
       });
     } catch (e) {
       return res.status(400).json({
@@ -93,9 +94,8 @@ class UserController {
   }
 
   async login(req, res) {
-    
     const { email = '', password = '' } = req.body;
-    console.log(req.body)
+    console.log(req.body);
 
     if (!email || !password) {
       return res.status(401).json({
@@ -123,9 +123,9 @@ class UserController {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    return res.json({ token , message : 'success' });
+    return res.json({ token, message: 'success' });
   }
-  
+
   async changePassword(req, res) {
     try {
       const { oldPassword = '', newPassword = '' } = req.body;
@@ -173,6 +173,4 @@ class UserController {
   }
 }
 
-
 export default new UserController();
-
