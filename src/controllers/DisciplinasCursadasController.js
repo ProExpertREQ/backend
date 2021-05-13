@@ -71,7 +71,7 @@ class DisciplinasCursadasController {
       return res.json({ faltas: newData.faltas });
     } catch (error) {
       return res.status(400).json({
-        errors: ['deu ruim'],
+        errors: error.errors.map((err) => err.message),
       });
     }
   }
@@ -88,17 +88,18 @@ class DisciplinasCursadasController {
 
       if (subject.faltas === 0) {
         return res.status(400).json({
-          errors: ['Bad Request'],
+          errors: ['O número de faltas deve ser um número entre 0 e 100'],
         });
       }
 
       const faltas = subject.faltas - 1;
+
       const newData = await subject.update({ faltas });
 
       return res.json({ Faltas: newData.faltas });
     } catch (error) {
       return res.status(400).json({
-        errors: ['deu ruim'],
+        errors: error.errors.map((err) => err.message),
       });
     }
   }
@@ -119,7 +120,7 @@ class DisciplinasCursadasController {
       return res.json({ Presenças: newData.presencas });
     } catch (error) {
       return res.status(400).json({
-        errors: ['deu ruim'],
+        errors: error.errors.map((err) => err.message),
       });
     }
   }
@@ -136,7 +137,7 @@ class DisciplinasCursadasController {
 
       if (subject.presencas === 0) {
         return res.status(400).json({
-          errors: ['Bad Request'],
+          errors: ['O número de faltas deve ser um número entre 0 e 100'],
         });
       }
 
@@ -146,7 +147,7 @@ class DisciplinasCursadasController {
       return res.json({ Presenças: newData.presencas });
     } catch (error) {
       return res.status(400).json({
-        errors: ['deu ruim'],
+        errors: error.errors.map((err) => err.message),
       });
     }
   }
