@@ -1,6 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import { next } from 'sucrase/dist/parser/tokenizer';
 import User from '../models/User';
+import DisciplinasCursadas from '../models/DisciplinasCursadas';
 
 require('dotenv').config();
 
@@ -25,7 +26,14 @@ class UserController {
 
   async getAll(req, res) {
     try {
-      const users = await User.findAll({ attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'] });
+      const users = await User.findAll({
+        attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'],
+        order: [[DisciplinasCursadas, 'id', 'DESC']],
+        include: {
+          model: DisciplinasCursadas,
+          attributes: ['turma_id', 'faltas', 'presencas'],
+        },
+      });
       return res.json(users);
     } catch (e) {
       return res.json(null);
@@ -34,15 +42,16 @@ class UserController {
 
   async getUserById(req, res) {
     try {
-      const user = await User.findByPk(req.userId);
-
-      const {
-        nome, matricula, departamento, curso, email,
-      } = user;
-
-      return res.json({
-        nome, matricula, departamento, curso, email,
+      const user = await User.findByPk(req.userId, {
+        attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'],
+        order: [[DisciplinasCursadas, 'id', 'ASC']],
+        include: {
+          model: DisciplinasCursadas,
+          attributes: ['turma_id', 'faltas', 'presencas'],
+        },
       });
+
+      return res.json(user);
     } catch (e) {
       return res.json(null);
     }
