@@ -123,7 +123,7 @@ class UserController {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    return res.json({ token, message: 'success' });
+    return res.json({ "token" : token , "userId" : id , message: 'success' });
   }
 
   async changePassword(req, res) {
