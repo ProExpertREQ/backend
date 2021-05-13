@@ -1,4 +1,6 @@
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
+import Turma from '../models/Turma';
+import Disciplina from '../models/Disciplina';
 
 class DisciplinasCursadasController {
   async getAll(req, res) {
@@ -8,6 +10,7 @@ class DisciplinasCursadasController {
         where: {
           user_id,
         },
+        attributes: ['id', 'faltas', 'presencas', 'turma_id'],
       });
 
       return res.json(allSubjects);
@@ -20,7 +23,9 @@ class DisciplinasCursadasController {
 
   async getById(req, res) {
     try {
-      const minhaDisciplina = await DisciplinasCursadas.findByPk(req.params.id);
+      const minhaDisciplina = await DisciplinasCursadas.findByPk(req.params.id, {
+        attributes: ['id', 'faltas', 'presencas', 'turma_id'],
+      });
 
       if (!minhaDisciplina) {
         return res.status(400).json({
@@ -28,7 +33,21 @@ class DisciplinasCursadasController {
         });
       }
 
-      return res.json(minhaDisciplina);
+      const turma = await Turma.findByPk(minhaDisciplina.turma_id);
+      const dadosDisciplina = await Disciplina.findByPk(turma.disciplina_id, {
+        attributes: ['id', 'nome', 'codigo', 'curso_id'],
+      });
+
+      return res.json({
+        id: minhaDisciplina.id,
+        disciplina_id: dadosDisciplina.id,
+        turma_id: minhaDisciplina.turma_id,
+        curso_id: dadosDisciplina.curso_id,
+        nome: dadosDisciplina.nome,
+        codigo: dadosDisciplina.codigo,
+        faltas: minhaDisciplina.faltas,
+        presencas: minhaDisciplina.presencas,
+      });
     } catch (e) {
       return res.status(400).json({
         errors: ['Bad Request'],
