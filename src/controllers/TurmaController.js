@@ -179,6 +179,19 @@ class TurmaController {
         });
       }
 
+      const wasRegistered = await DisciplinasCursadas.findOne({
+        where: {
+          user_id,
+          turma_id,
+        },
+      });
+
+      if (wasRegistered) {
+        return res.status(400).json({
+          errors: ['Essa turma já foi registrada.'],
+        });
+      }
+
       const disciplinaRegistrada = await DisciplinasCursadas.create({ user_id, turma_id });
 
       return res.json(disciplinaRegistrada);
