@@ -7,20 +7,20 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      nome: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      matricula: {
+      registration_number: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
-      departamento: {
+      department: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      curso: {
+      course: {
         type: Sequelize.STRING,
         allowNull: false,
       },

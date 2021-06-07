@@ -1,6 +1,20 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('disciplinasCursadas', {
+    await queryInterface.createTable('my_subject', {
+      id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      absences: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      presence: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,20 +25,15 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      disciplina_id: {
+      class_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'disciplinas',
+          model: 'classes',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-      },
-      curso_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -38,6 +47,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('disciplinasCursadas');
+    await queryInterface.dropTable('my_subject');
   },
 };

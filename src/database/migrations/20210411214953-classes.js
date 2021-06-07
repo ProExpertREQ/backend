@@ -1,23 +1,23 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('turmas', {
+    await queryInterface.createTable('classes', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      disciplina_id: {
+      subject_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'disciplinas',
+          model: 'subjects',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      codigo: {
+      code: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
@@ -34,11 +34,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      ano_periodo: {
+      year_term: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      horario: {
+      schedule: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -78,6 +78,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('turmas');
+    await queryInterface.dropTable('classes');
   },
 };
