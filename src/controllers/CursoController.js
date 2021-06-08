@@ -1,4 +1,4 @@
-import Departamento from '../models/Departamento';
+import Department from '../models/Department';
 import Curso from '../models/Curso';
 
 class CursoController {
@@ -7,7 +7,7 @@ class CursoController {
       const { departamento_id } = req.params;
       const { nome } = req.body;
 
-      const departamento = await Departamento.findByPk(departamento_id);
+      const departamento = await Department.findByPk(departamento_id);
 
       if (!departamento) {
         return res.status(400).json({
@@ -43,7 +43,7 @@ class CursoController {
     try {
       const { departamento_id } = req.params;
 
-      const departamento = await Departamento.findByPk(departamento_id);
+      const departamento = await Department.findByPk(departamento_id);
 
       if (!departamento) {
         return res.status(400).json({
