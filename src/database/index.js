@@ -2,12 +2,12 @@ import Sequelize from 'sequelize';
 import databaseConfig from '../config/database';
 import User from '../models/User';
 import Department from '../models/Department';
-import Curso from '../models/Curso';
+import Course from '../models/Course';
 import Disciplina from '../models/Disciplina';
 import Turma from '../models/Turma';
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
 
-const models = [User, Department, Curso, Disciplina, Turma, DisciplinasCursadas];
+const models = [User, Department, Course, Disciplina, Turma, DisciplinasCursadas];
 
 const connection = new Sequelize(databaseConfig);
 

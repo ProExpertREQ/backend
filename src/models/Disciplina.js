@@ -32,6 +32,6 @@ export default class Disciplina extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Curso, { foreignKey: 'curso_id', as: 'hasDisciplines' });
+    this.belongsTo(models.Course, { foreignKey: 'course_id', as: 'hasSubjects' });
   }
 }

@@ -1,9 +1,9 @@
 import Sequelize, { Model } from 'sequelize';
 
-export default class Curso extends Model {
+export default class Course extends Model {
   static init(sequelize) {
     super.init({
-      nome: {
+      name: {
         type: Sequelize.STRING,
         defaultValue: '',
         unique: {

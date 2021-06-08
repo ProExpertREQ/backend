@@ -8,7 +8,7 @@ import express from 'express';
 import homeRoutes from './src/routes/homeRoutes';
 import userRoutes from './src/routes/userRoutes';
 import departmentRoutes from './src/routes/departmentRoutes';
-import cursoRoutes from './src/routes/cursoRoutes';
+import courseRoutes from './src/routes/courseRoutes';
 import disciplinaRoutes from './src/routes/disciplinaRoutes';
 import turmaRoutes from './src/routes/turmaRoutes';
 import disciplinasCursadasRoutes from './src/routes/disciplinasCursadasRoutes';
@@ -33,7 +33,7 @@ class App {
     this.app.use('/users/', userRoutes);
     this.app.use('/departments/', departmentRoutes);
     this.app.use('/disciplinas-cursadas/', disciplinasCursadasRoutes);
-    this.app.use('/', cursoRoutes);
+    this.app.use('/', courseRoutes);
     this.app.use('/', disciplinaRoutes);
     this.app.use('/', turmaRoutes);
   }

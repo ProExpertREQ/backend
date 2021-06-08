@@ -1,4 +1,4 @@
-import Curso from '../models/Curso';
+import Curso from '../models/Course';
 import Disciplina from '../models/Disciplina';
 
 class DisciplinaController {

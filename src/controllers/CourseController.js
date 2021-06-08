@@ -1,25 +1,23 @@
 import Department from '../models/Department';
-import Curso from '../models/Curso';
+import Course from '../models/Course';
 
-class CursoController {
+class CourseController {
   async create(req, res) {
     try {
-      const { departamento_id } = req.params;
-      const { nome } = req.body;
+      const { department_id } = req.params;
+      const { name } = req.body;
 
-      const departamento = await Department.findByPk(departamento_id);
+      const department = await Department.findByPk(department_id);
 
-      if (!departamento) {
+      if (!department) {
         return res.status(400).json({
-          errors: 'O departamento não existe.',
+          errors: 'Esse departamento não existe.',
         });
       }
 
-      const curso = await Curso.create({ departamento_id, nome });
+      await Course.create({ department_id, name });
 
-      const dados = { departamento: departamento.nome, curso_id: curso.id, nome: curso.nome };
-
-      return res.json(dados);
+      return res.status(201).json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -28,89 +26,61 @@ class CursoController {
   }
 
   async getAll(req, res) {
-    try {
-      const cursos = await Curso.findAll({ attributes: ['id', 'nome'] });
+    const courses = await Course.findAll({ attributes: ['id', 'name'] });
 
-      return res.json(cursos);
-    } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
-    }
+    return res.json(courses);
   }
 
   async getCoursesByDepartament(req, res) {
-    try {
-      const { departamento_id } = req.params;
+    const { department_id } = req.params;
 
-      const departamento = await Department.findByPk(departamento_id);
+    const department = await Department.findByPk(department_id);
 
-      if (!departamento) {
-        return res.status(400).json({
-          errors: 'O departamento não existe.',
-        });
-      }
-
-      const cursos = await Curso.findAll({
-        where: {
-          departamento_id,
-        },
-        attributes: ['id', 'nome'],
-      });
-
-      return res.json({ departamento: departamento.nome, cursos });
-    } catch (e) {
+    if (!department) {
       return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
+        errors: 'Esse departamento não existe',
       });
     }
+
+    const cursos = await Course.findAll({
+      where: {
+        department_id,
+      },
+      attributes: ['id', 'name'],
+    });
+
+    return res.json({ department: department.name, cursos });
   }
 
   async getCourseById(req, res) {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      if (!id) {
-        return res.status(400).json({
-          errors: ['O ID do curso não foi enviado.'],
-        });
-      }
+    const curso = await Course.findByPk(id);
 
-      const curso = await Curso.findByPk(id);
-
-      if (!curso) {
-        return res.status(400).json({
-          errors: ['Esse curso não existe.'],
-        });
-      }
-
-      const { departamento_id, nome } = curso;
-
-      return res.json({ departamento_id, id, nome });
-    } catch (e) {
-      return res.json(null);
+    if (!curso) {
+      return res.status(400).json({
+        errors: ['Esse curso não existe.'],
+      });
     }
+
+    const { department_id, nome } = curso;
+
+    return res.json({ department_id, id, nome });
   }
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['O ID do curso não foi encontrado.'],
-        });
+      const { id } = req.params;
+
+      const course = await Course.findByPk(id);
+
+      if (!course) {
+        return res.status(400).json({ error: 'Esse curso não foi encontrado' });
       }
 
-      const curso = await Curso.findByPk(req.params.id);
+      const { name } = await course.update(req.body);
 
-      if (!curso) {
-        return res.status(400).json({
-          errors: ['O curso procurado não existe.'],
-        });
-      }
-
-      const { id, nome } = await curso.update(req.body);
-
-      return res.json({ id, nome });
+      return res.json({ id, name });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -119,30 +89,18 @@ class CursoController {
   }
 
   async delete(req, res) {
-    try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['O ID do curso não foi enviado.'],
-        });
-      }
+    const { id } = req.params;
 
-      const curso = await Curso.findByPk(req.params.id);
+    const course = await Course.findByPk(id);
 
-      if (!curso) {
-        return res.status(400).json({
-          errors: ['O curso não existe.'],
-        });
-      }
-
-      await curso.destroy();
-
-      return res.json(`O curso '${curso.id} ${curso.nome}' foi deletado.`);
-    } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
+    if (!course) {
+      return res.status(400).json({ error: 'Esse curso não foi encontrado' });
     }
+
+    await course.destroy();
+
+    return res.status(200).json({ message: 'deleted' });
   }
 }
 
-export default new CursoController();
+export default new CourseController();
