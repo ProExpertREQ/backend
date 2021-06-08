@@ -104,7 +104,7 @@ class UserController {
 
     if (!email || !password) {
       return res.status(401).json({
-        errors: ['Credenciais inválidas'],
+        error: 'Credenciais inválidas',
       });
     }
 
@@ -112,13 +112,13 @@ class UserController {
 
     if (!user) {
       return res.status(401).json({
-        errors: ['Usuário não existe'],
+        error: 'Usuário não existe',
       });
     }
 
     if (!(await user.passwordIsValid(password))) {
       return res.status(401).json({
-        errors: ['Senha incorreta'],
+        error: 'Senha incorreta',
       });
     }
 
@@ -137,28 +137,28 @@ class UserController {
 
       if (!oldPassword || !newPassword) {
         return res.status(401).json({
-          errors: ['Credenciais inválidas'],
+          error: 'Credenciais inválidas',
         });
       }
 
       if (oldPassword === newPassword) {
         return res.status(400).json({
-          errors: ['Sua nova senha é igual a antiga'],
+          error: 'Sua nova senha é igual a antiga',
+        });
+      }
+
+      if (newPassword.trim().length <= 5 || newPassword.trim().length > 50) {
+        return res.status(400).json({
+          error: 'Sua senha precisa ter mais que 5 caracteres',
         });
       }
 
       const id = req.userId;
       const user = await User.findByPk(id);
 
-      if (!user) {
-        return res.status(404).json({
-          error: ['O usuário não existe'],
-        });
-      }
-
       if (!(await user.passwordIsValid(oldPassword))) {
         return res.status(401).json({
-          errors: ['Sua senha antiga está incorreta'],
+          error: 'Sua senha antiga está incorreta',
         });
       }
 
