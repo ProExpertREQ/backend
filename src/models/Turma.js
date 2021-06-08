@@ -74,6 +74,6 @@ export default class Turma extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Disciplina, { foreignKey: 'disciplina_id', as: 'hasClasses' });
+    this.belongsTo(models.Subject, { foreignKey: 'subject_id', as: 'hasClasses' });
   }
 }

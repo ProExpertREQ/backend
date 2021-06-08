@@ -1,6 +1,6 @@
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
 import Turma from '../models/Turma';
-import Disciplina from '../models/Disciplina';
+import Disciplina from '../models/Subject';
 
 class DisciplinasCursadasController {
   async getAll(req, res) {

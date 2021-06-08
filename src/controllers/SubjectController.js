@@ -1,30 +1,23 @@
-import Curso from '../models/Course';
-import Disciplina from '../models/Disciplina';
+import Course from '../models/Course';
+import Subject from '../models/Subject';
 
-class DisciplinaController {
+class SubjectController {
   async create(req, res) {
     try {
-      const { curso_id } = req.params;
-      const { nome, codigo } = req.body;
+      const { course_id } = req.params;
+      const { name, code } = req.body;
 
-      const curso = await Curso.findByPk(curso_id);
+      const course = await Course.findByPk(course_id);
 
-      if (!curso) {
+      if (!course) {
         return res.status(400).json({
-          errors: 'Esse curso não existe.',
+          error: 'Esse curso não existe',
         });
       }
 
-      const disciplina = await Disciplina.create({ curso_id, nome, codigo });
+      await Subject.create({ name, code, course_id });
 
-      const dados = {
-        curso_id: curso.id,
-        curso: curso.nome,
-        id_disciplina: disciplina.id,
-        disciplina: disciplina.nome,
-      };
-
-      return res.json(dados);
+      return res.status(201).json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -33,89 +26,63 @@ class DisciplinaController {
   }
 
   async getAll(req, res) {
-    try {
-      const disciplinas = await Disciplina.findAll({ attributes: ['id', 'nome'] });
+    const subjects = await Subject.findAll({ attributes: ['id', 'name', 'code'] });
 
-      return res.json(disciplinas);
-    } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
-    }
+    return res.status(200).json(subjects);
   }
 
   async getDisciplinesByCourse(req, res) {
-    try {
-      const { curso_id } = req.params;
+    const { course_id } = req.params;
 
-      const curso = await Curso.findByPk(curso_id);
+    const course = await Course.findByPk(course_id);
 
-      if (!curso) {
-        return res.status(400).json({
-          errors: 'O curso não existe.',
-        });
-      }
-
-      const disciplinas = await Disciplina.findAll({
-        where: {
-          curso_id,
-        },
-        attributes: ['id', 'nome'],
-      });
-
-      return res.json({ Curso: curso.nome, disciplinas });
-    } catch (e) {
+    if (!course) {
       return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
+        errors: 'Esse curso não existe',
       });
     }
+
+    const subjects = await Subject.findAll({
+      where: {
+        course_id,
+      },
+      attributes: ['id', 'name', 'code'],
+    });
+
+    return res.json({ Course: course.name, subjects });
   }
 
   async getDisciplineById(req, res) {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      if (!id) {
-        return res.status(400).json({
-          errors: ['O ID da disciplina não foi enviado.'],
-        });
-      }
+    const subject = await Subject.findByPk(id);
 
-      const disciplina = await Disciplina.findByPk(id);
-
-      if (!disciplina) {
-        return res.status(400).json({
-          errors: ['Essa disciplina não existe.'],
-        });
-      }
-
-      const { curso_id, nome } = disciplina;
-
-      return res.json({ curso_id, id, nome });
-    } catch (e) {
-      return res.json(null);
+    if (!subject) {
+      return res.status(400).json({
+        error: 'Essa disciplina não existe',
+      });
     }
+
+    const { course_id, name, code } = subject;
+
+    return res.json({ course_id, name, code });
   }
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
+      const { id } = req.params;
+
+      const subject = await Subject.findByPk(id);
+
+      if (!subject) {
         return res.status(400).json({
-          errors: ['O ID da disciplina não foi encontrado.'],
+          error: 'Essa disciplina não foi encontrada',
         });
       }
 
-      const disciplina = await Disciplina.findByPk(req.params.id);
+      const { name, code } = await subject.update(req.body);
 
-      if (!disciplina) {
-        return res.status(400).json({
-          errors: ['A disciplina procurada não existe.'],
-        });
-      }
-
-      const { id, nome } = await disciplina.update(req.body);
-
-      return res.json({ id, nome });
+      return res.json({ id, name, code });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -124,30 +91,20 @@ class DisciplinaController {
   }
 
   async delete(req, res) {
-    try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['O ID da disciplina não foi enviado.'],
-        });
-      }
+    const { id } = req.params;
 
-      const disciplina = await Disciplina.findByPk(req.params.id);
+    const subject = await Subject.findByPk(id);
 
-      if (!disciplina) {
-        return res.status(400).json({
-          errors: ['A disciplina não existe.'],
-        });
-      }
-
-      await disciplina.destroy();
-
-      return res.json(`A disciplina '${disciplina.id} ${disciplina.nome}' foi deletada.`);
-    } catch (e) {
+    if (!subject) {
       return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
+        errors: 'Essa disciplina não foi encontrada',
       });
     }
+
+    await subject.destroy();
+
+    return res.status(200).json({ message: 'deleted' });
   }
 }
 
-export default new DisciplinaController();
+export default new SubjectController();

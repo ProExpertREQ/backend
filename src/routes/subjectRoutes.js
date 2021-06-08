@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import disciplinaController from '../controllers/DisciplinaController';
+import SubjectController from '../controllers/SubjectController';
 
 const router = new Router();
 
-router.get('/cursos/:curso_id/disciplinas', disciplinaController.getDisciplinesByCourse);
-router.post('/cursos/:curso_id/disciplinas/create', disciplinaController.create);
-router.get('/disciplinas/get-all', disciplinaController.getAll);
-router.get('/disciplinas/:id', disciplinaController.getDisciplineById);
-router.put('/disciplinas/update/:id', disciplinaController.update);
-router.delete('/disciplinas/delete/:id', disciplinaController.delete);
+router.get('/courses/:course_id/subjects', SubjectController.getDisciplinesByCourse);
+router.post('/courses/:course_id/subjects/create', SubjectController.create);
+router.get('/subjects/get-all', SubjectController.getAll);
+router.get('/subjects/:id', SubjectController.getDisciplineById);
+router.put('/subjects/update/:id', SubjectController.update);
+router.delete('/subjects/delete/:id', SubjectController.delete);
 
 export default router;

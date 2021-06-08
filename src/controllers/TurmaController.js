@@ -1,4 +1,4 @@
-import Disciplina from '../models/Disciplina';
+import Disciplina from '../models/Subject';
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
 import Turma from '../models/Turma';
 
