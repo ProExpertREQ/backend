@@ -4,34 +4,34 @@ import bcryptjs from 'bcryptjs';
 export default class User extends Model {
   static init(sequelize) {
     super.init({
-      nome: {
+      name: {
         type: Sequelize.STRING,
         defaultValue: '',
         validate: {
           len: {
             args: [3, 255],
-            msg: 'A campo nome precisa ter entre 3 e 255 caracteres.',
+            msg: 'Seu nome precisa ter mais que 2 caracteres',
           },
         },
       },
-      matricula: {
+      registration_number: {
         type: Sequelize.STRING,
         defaultValue: '',
         unique: {
-          msg: 'Essa matrícula já está vinculada a uma conta.',
+          msg: 'Essa matrícula já está vinculada a uma conta',
         },
         validate: {
           len: {
             args: [9],
-            msg: 'A campo matrícula precisa ter 9 dígitos.',
+            msg: 'Sua matrícula precisa ter 9 dígitos. (Ex: 123456789)',
           },
         },
       },
-      departamento: {
+      department: {
         type: Sequelize.STRING,
         defaultValue: '',
       },
-      curso: {
+      course: {
         type: Sequelize.STRING,
         defaultValue: '',
       },
@@ -43,11 +43,11 @@ export default class User extends Model {
         type: Sequelize.STRING,
         defaultValue: '',
         unique: {
-          msg: 'Esse e-mail já está vinculado a uma conta.',
+          msg: 'Esse e-mail já está vinculado a uma conta',
         },
         validate: {
           isEmail: {
-            msg: 'E-mail inválido.',
+            msg: 'Esse e-mail não é válido',
           },
         },
       },
@@ -61,7 +61,7 @@ export default class User extends Model {
         validate: {
           len: {
             args: [5, 50],
-            msg: 'A senha precisa ter entre 5 e 50 caracteres.',
+            msg: 'Sua senha precisa ter mais que 5 caracteres',
           },
         },
       },
