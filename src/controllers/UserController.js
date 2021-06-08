@@ -4,7 +4,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
-import DisciplinasCursadas from '../models/DisciplinasCursadas';
+// import DisciplinasCursadas from '../models/DisciplinasCursadas';
 
 class UserController {
   async create(req, res) {
@@ -23,7 +23,7 @@ class UserController {
         password,
       });
 
-      return res.json({ message: 'success' });
+      return res.status(201).json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -67,17 +67,22 @@ class UserController {
         name,
         registration_number,
         email,
-        password,
       } = req.body;
 
-      await userExists.update({
+      const data = await userExists.update({
         name,
         registration_number,
         email,
-        password,
       });
 
-      return res.json({ message: 'success' });
+      const user = {
+        name: data.name,
+        registration_number: data.registration_number,
+        department: data.department,
+        course: data.course,
+      };
+
+      return res.status(200).json({ user, message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -91,7 +96,7 @@ class UserController {
 
     await user.destroy();
 
-    return res.json({ message: 'success' });
+    return res.json({ message: 'updated' });
   }
 
   async login(req, res) {
@@ -99,7 +104,7 @@ class UserController {
 
     if (!email || !password) {
       return res.status(401).json({
-        errors: ['Credenciais inválidas.'],
+        errors: ['Credenciais inválidas'],
       });
     }
 
@@ -107,13 +112,13 @@ class UserController {
 
     if (!user) {
       return res.status(401).json({
-        errors: ['Usuário não existe.'],
+        errors: ['Usuário não existe'],
       });
     }
 
     if (!(await user.passwordIsValid(password))) {
       return res.status(401).json({
-        errors: ['Senha incorreta.'],
+        errors: ['Senha incorreta'],
       });
     }
 
