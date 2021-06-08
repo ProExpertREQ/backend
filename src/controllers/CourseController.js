@@ -42,14 +42,14 @@ class CourseController {
       });
     }
 
-    const cursos = await Course.findAll({
+    const courses = await Course.findAll({
       where: {
         department_id,
       },
       attributes: ['id', 'name'],
     });
 
-    return res.json({ department: department.name, cursos });
+    return res.json({ department: department.name, courses });
   }
 
   async getCourseById(req, res) {
@@ -59,7 +59,7 @@ class CourseController {
 
     if (!curso) {
       return res.status(400).json({
-        errors: ['Esse curso não existe.'],
+        errors: 'Esse curso não existe',
       });
     }
 
