@@ -1,22 +1,29 @@
-import bcryptjs from 'bcryptjs';
-import { next } from 'sucrase/dist/parser/tokenizer';
-import User from '../models/User';
-import DisciplinasCursadas from '../models/DisciplinasCursadas';
-
 require('dotenv').config();
 
+import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+import User from '../models/User';
+import DisciplinasCursadas from '../models/DisciplinasCursadas';
 
 class UserController {
   async create(req, res) {
     try {
-      const newUser = await User.create(req.body);
       const {
-        nome, departamento, curso, email,
-      } = newUser;
-      return res.json({
-        message: 'success',
+        name,
+        registration_number,
+        email,
+        password,
+      } = req.body;
+
+      await User.create({
+        name,
+        registration_number,
+        email,
+        password,
       });
+
+      return res.json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -27,13 +34,9 @@ class UserController {
   async getAll(req, res) {
     try {
       const users = await User.findAll({
-        attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'],
-        order: [[DisciplinasCursadas, 'id', 'DESC']],
-        include: {
-          model: DisciplinasCursadas,
-          attributes: ['turma_id', 'faltas', 'presencas'],
-        },
+        attributes: ['name', 'registration_number', 'department', 'course', 'email'],
       });
+
       return res.json(users);
     } catch (e) {
       return res.json(null);
@@ -41,40 +44,40 @@ class UserController {
   }
 
   async getUserById(req, res) {
-    try {
-      const user = await User.findByPk(req.userId, {
-        attributes: ['nome', 'matricula', 'departamento', 'curso', 'email'],
-        order: [[DisciplinasCursadas, 'id', 'ASC']],
-        include: {
-          model: DisciplinasCursadas,
-          attributes: ['turma_id', 'faltas', 'presencas'],
-        },
-      });
+    const id = req.userId;
+    const user = await User.findByPk(id, {
+      attributes: [
+        'name',
+        'registration_number',
+        'department',
+        'course',
+        'email',
+      ],
+    });
 
-      return res.json(user);
-    } catch (e) {
-      return res.json(null);
-    }
+    return res.json(user);
   }
 
   async update(req, res) {
     try {
-      const user = await User.findByPk(req.userId);
+      const id = req.userId;
+      const userExists = await User.findByPk(id);
 
-      if (!user) {
-        return res.status(400).json({
-          errors: ['Usuário não existe.'],
-        });
-      }
-
-      const novosDados = await user.update(req.body);
       const {
-        nome, matricula, departamento, curso, email,
-      } = novosDados;
+        name,
+        registration_number,
+        email,
+        password,
+      } = req.body;
 
-      return res.json({
-        nome, matricula, departamento, curso, email,
+      await userExists.update({
+        name,
+        registration_number,
+        email,
+        password,
       });
+
+      return res.json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -83,28 +86,16 @@ class UserController {
   }
 
   async delete(req, res) {
-    try {
-      const user = await User.findByPk(req.userId);
+    const id = req.userId;
+    const user = await User.findByPk(id);
 
-      if (!user) {
-        return res.status(400).json({
-          errors: ['Usuário não existe.'],
-        });
-      }
+    await user.destroy();
 
-      await user.destroy();
-
-      return res.json(`O usuário vinculado a matrícula ${user.matricula} foi excluído.`);
-    } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
-    }
+    return res.json({ message: 'success' });
   }
 
   async login(req, res) {
     const { email = '', password = '' } = req.body;
-    console.log(req.body);
 
     if (!email || !password) {
       return res.status(401).json({
@@ -132,7 +123,7 @@ class UserController {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    return res.json({ "token" : token , "userId" : id , message: 'success' });
+    return res.json({ token, userId: id, message: 'success' });
   }
 
   async changePassword(req, res) {
@@ -141,41 +132,36 @@ class UserController {
 
       if (!oldPassword || !newPassword) {
         return res.status(401).json({
-          errors: ['Credenciais inválidas.'],
+          errors: ['Credenciais inválidas'],
         });
       }
 
       if (oldPassword === newPassword) {
         return res.status(400).json({
-          errors: ['A nova senha é igual a antiga.'],
+          errors: ['Sua nova senha é igual a antiga'],
         });
       }
 
-      const user = await User.findByPk(10);
+      const id = req.userId;
+      const user = await User.findByPk(id);
 
       if (!user) {
         return res.status(404).json({
-          error: ['O usuário não existe.'],
+          error: ['O usuário não existe'],
         });
       }
 
       if (!(await user.passwordIsValid(oldPassword))) {
         return res.status(401).json({
-          errors: ['Senha incorreta.'],
+          errors: ['Sua senha antiga está incorreta'],
         });
       }
 
       const password_hash = await bcryptjs.hash(newPassword, 8);
 
-      const updatedUser = await user.update({ password_hash });
+      await user.update({ password_hash });
 
-      return res.json({
-        nome: updatedUser.nome,
-        matricula: updatedUser.matricula,
-        departamento: updatedUser.departamento,
-        curso: updatedUser.curso,
-        email: updatedUser.email,
-      });
+      return res.json({ message: 'success' });
     } catch (e) {
       return e;
     }
