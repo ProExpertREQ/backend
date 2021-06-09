@@ -1,3 +1,5 @@
+require('express-async-errors');
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -36,6 +38,11 @@ class App {
     this.app.use('/', courseRoutes);
     this.app.use('/', subjectRoutes);
     this.app.use('/', classRoutes);
+
+    this.app.use((error, request, response, next) => {
+      console.log(error);
+      response.sendStatus(500);
+    });
   }
 }
 
