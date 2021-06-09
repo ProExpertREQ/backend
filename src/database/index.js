@@ -5,9 +5,9 @@ import Department from '../models/Department';
 import Course from '../models/Course';
 import Subject from '../models/Subject';
 import Class from '../models/Class';
-import DisciplinasCursadas from '../models/DisciplinasCursadas';
+import MyClass from '../models/MyClass';
 
-const models = [User, Department, Course, Subject, Class, DisciplinasCursadas];
+const models = [User, Department, Course, Subject, Class, MyClass];
 
 const connection = new Sequelize(databaseConfig);
 

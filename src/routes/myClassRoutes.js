@@ -1,16 +1,14 @@
 import { Router } from 'express';
-import disciplinasCursadasController from '../controllers/DisciplinasCursadasController';
+import MyClassController from '../controllers/MyClassController';
 import loginRequired from '../middlewares/loginRequired';
 
 const router = new Router();
 
-router.get('/get-all', loginRequired, disciplinasCursadasController.getAll);
-router.get('/:id', loginRequired, disciplinasCursadasController.getById);
-
-router.put('/:id/add-absences', loginRequired, disciplinasCursadasController.addAbsences);
-router.put('/:id/remove-absences', loginRequired, disciplinasCursadasController.removeAbsences);
-
-router.put('/:id/add-presence', loginRequired, disciplinasCursadasController.addPresence);
-router.put('/:id/remove-presence', loginRequired, disciplinasCursadasController.removePresence);
+router.get('/get-all', loginRequired, MyClassController.getAll);
+router.get('/:id', loginRequired, MyClassController.getById);
+router.put('/:id/add-absence', loginRequired, MyClassController.addAbsences);
+router.put('/:id/remove-absence', loginRequired, MyClassController.removeAbsences);
+router.put('/:id/add-presence', loginRequired, MyClassController.addPresence);
+router.put('/:id/remove-presence', loginRequired, MyClassController.removePresence);
 
 export default router;

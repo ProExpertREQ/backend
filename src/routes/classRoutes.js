@@ -11,6 +11,6 @@ router.post('/subjects/:subject_id/classes/create', loginRequired, ClassControll
 router.put('/classes/update/:id', loginRequired, ClassController.update);
 router.delete('/classes/delete/:id', loginRequired, ClassController.delete);
 
-router.post('/classes/:id/register', loginRequired, ClassController.register);
+router.get('/classes/:id/register', loginRequired, ClassController.register);
 
 export default router;

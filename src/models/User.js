@@ -80,7 +80,7 @@ export default class User extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.DisciplinasCursadas, { foreignKey: 'user_id' });
+    this.hasMany(models.MyClass, { foreignKey: 'user_id' });
   }
 
   passwordIsValid(password) {

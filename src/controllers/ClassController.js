@@ -1,5 +1,5 @@
 import Subject from '../models/Subject';
-import DisciplinasCursadas from '../models/DisciplinasCursadas';
+import MyClass from '../models/MyClass';
 import Class from '../models/Class';
 
 class ClassController {
@@ -217,39 +217,33 @@ class ClassController {
   }
 
   async register(req, res) {
-    try {
-      const user_id = req.userId;
-      const class_id = req.params.id;
+    const user_id = req.userId;
+    const class_id = req.params.id;
 
-      const theClass = await Class.findByPk(class_id);
+    const theClass = await Class.findByPk(class_id);
 
-      if (!theClass) {
-        return res.status(400).json({
-          errors: 'A turma não existe',
-        });
-      }
-
-      const registered = await DisciplinasCursadas.findOne({
-        where: {
-          user_id,
-          class_id,
-        },
-      });
-
-      if (registered) {
-        return res.status(400).json({
-          errors: 'A turma já foi registrada',
-        });
-      }
-
-      const myClass = await DisciplinasCursadas.create({ user_id, class_id });
-
-      return res.json(myClass);
-    } catch (error) {
+    if (!theClass) {
       return res.status(400).json({
-        errors: ['Não foi possivel registrar-se.'],
+        errors: 'A turma não existe',
       });
     }
+
+    const registered = await MyClass.findOne({
+      where: {
+        user_id,
+        class_id,
+      },
+    });
+
+    if (registered) {
+      return res.status(400).json({
+        errors: 'A turma já foi registrada',
+      });
+    }
+
+    await MyClass.create({ user_id, class_id });
+
+    return res.status(201).json({ message: 'success' });
   }
 }
 

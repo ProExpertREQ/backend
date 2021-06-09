@@ -11,8 +11,7 @@ import departmentRoutes from './src/routes/departmentRoutes';
 import courseRoutes from './src/routes/courseRoutes';
 import subjectRoutes from './src/routes/subjectRoutes';
 import classRoutes from './src/routes/classRoutes';
-
-import disciplinasCursadasRoutes from './src/routes/disciplinasCursadasRoutes';
+import myClassRoutes from './src/routes/myClassRoutes';
 
 const cors = require('cors');
 
@@ -33,7 +32,7 @@ class App {
     this.app.use('/', homeRoutes);
     this.app.use('/users/', userRoutes);
     this.app.use('/departments/', departmentRoutes);
-    this.app.use('/disciplinas-cursadas/', disciplinasCursadasRoutes);
+    this.app.use('/myClasses/', myClassRoutes);
     this.app.use('/', courseRoutes);
     this.app.use('/', subjectRoutes);
     this.app.use('/', classRoutes);

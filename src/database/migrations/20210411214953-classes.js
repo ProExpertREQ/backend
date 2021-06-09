@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      sala_professor: {
+      room_professor: {
         type: Sequelize.STRING,
         allowNull: false,
       },
