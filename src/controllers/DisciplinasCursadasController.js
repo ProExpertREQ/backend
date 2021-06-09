@@ -1,5 +1,5 @@
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
-import Turma from '../models/Turma';
+import Turma from '../models/Class';
 import Disciplina from '../models/Subject';
 
 class DisciplinasCursadasController {

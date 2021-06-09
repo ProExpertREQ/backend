@@ -1,13 +1,19 @@
 import Sequelize, { Model } from 'sequelize';
 
-export default class Turma extends Model {
+export default class Class extends Model {
   static init(sequelize) {
     super.init({
-      codigo: {
+      code: {
         type: Sequelize.STRING,
         defaultValue: '',
         unique: {
-          msg: 'Essa turma já foi cadastrada.',
+          msg: 'Essa turma já foi cadastrada',
+        },
+        validate: {
+          len: {
+            args: [3, 5],
+            msg: 'O código da turma precisa ter mais de 2 caracteres',
+          },
         },
       },
       professor: {
@@ -15,8 +21,8 @@ export default class Turma extends Model {
         defaultValue: '',
         validate: {
           len: {
-            args: [5, 255],
-            msg: 'A campo precisa ter mais de 5 e menos que 255 caracteres.',
+            args: [3, 255],
+            msg: 'O nome do professor precisa ter mais que  3 caracteres',
           },
         },
       },
@@ -25,19 +31,19 @@ export default class Turma extends Model {
         defaultValue: '',
         validate: {
           isEmail: {
-            msg: 'E-mail inválido.',
+            msg: 'O e-mail do professor é inválido',
           },
         },
       },
-      sala_professor: {
+      room_professor: {
         type: Sequelize.STRING,
         defaultValue: '',
       },
-      ano_periodo: {
+      year_term: {
         type: Sequelize.STRING,
         defaultValue: '',
       },
-      horario: {
+      schedule: {
         type: Sequelize.STRING,
         defaultValue: '',
       },

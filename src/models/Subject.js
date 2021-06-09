@@ -25,7 +25,7 @@ export default class Subject extends Model {
         validate: {
           len: {
             args: [3, 5],
-            msg: 'O código da disciplina precisa ter mais que 2 caracteres',
+            msg: 'O código da disciplina precisa ter mais de 2 caracteres',
           },
         },
       },

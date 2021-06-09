@@ -29,7 +29,7 @@ export default class DisciplinasCursadas extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Turma, { foreignKey: 'turma_id', as: 'hasClasses' });
+    this.belongsTo(models.Class, { foreignKey: 'turma_id', as: 'hasClasses' });
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'hasSubjects' });
   }
 }

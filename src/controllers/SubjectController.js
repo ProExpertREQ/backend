@@ -11,7 +11,7 @@ class SubjectController {
 
       if (!course) {
         return res.status(400).json({
-          error: 'Esse curso não existe',
+          error: 'Curso não encontrado',
         });
       }
 
@@ -76,7 +76,7 @@ class SubjectController {
 
       if (!subject) {
         return res.status(400).json({
-          error: 'Essa disciplina não foi encontrada',
+          error: 'A disciplina não foi encontrada',
         });
       }
 
@@ -97,7 +97,7 @@ class SubjectController {
 
     if (!subject) {
       return res.status(400).json({
-        errors: 'Essa disciplina não foi encontrada',
+        errors: 'A disciplina não foi encontrada',
       });
     }
 

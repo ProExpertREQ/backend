@@ -1,49 +1,51 @@
-import Disciplina from '../models/Subject';
+import Subject from '../models/Subject';
 import DisciplinasCursadas from '../models/DisciplinasCursadas';
-import Turma from '../models/Turma';
+import Class from '../models/Class';
 
-class TurmaController {
+class ClassController {
   async create(req, res) {
     try {
-      const { disciplina_id } = req.params;
+      const { subject_id } = req.params;
       const {
-        codigo,
+        code,
         professor,
         email_professor,
-        sala_professor,
-        ano_periodo,
-        horario,
+        room_professor,
+        year_term,
+        schedule,
         local,
         moodle,
+        teams,
         youtube,
         whatsapp,
         telegram,
       } = req.body;
 
-      const disciplina = await Disciplina.findByPk(disciplina_id);
+      const subject = await Subject.findByPk(subject_id);
 
-      if (!disciplina) {
+      if (!subject) {
         return res.status(400).json({
-          errors: 'Essa disciplina não existe.',
+          errors: 'Disciplina não foi encontrada',
         });
       }
 
-      const turma = await Turma.create({
-        disciplina_id,
-        codigo,
+      await Class.create({
+        subject_id,
+        code,
         professor,
         email_professor,
-        sala_professor,
-        ano_periodo,
-        horario,
+        room_professor,
+        year_term,
+        schedule,
         local,
         moodle,
+        teams,
         youtube,
         whatsapp,
         telegram,
       });
 
-      return res.json(turma);
+      return res.status(201).json({ message: 'success' });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -52,87 +54,145 @@ class TurmaController {
   }
 
   async getAll(req, res) {
-    try {
-      const turmas = await Turma.findAll({ attributes: ['id', 'codigo', 'professor', 'email_professor', 'sala_professor', 'ano_periodo', 'horario', 'local', 'moodle', 'youtube', 'whatsapp', 'telegram'] });
+    const classes = await Class.findAll({
+      attributes: [
+        'id',
+        'code',
+        'professor',
+        'email_professor',
+        'room_professor',
+        'year_term',
+        'schedule',
+        'local',
+        'teams',
+        'moodle',
+        'youtube',
+        'whatsapp',
+        'telegram',
+      ],
+    });
 
-      return res.json(turmas);
-    } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
-    }
+    return res.status(200).json(classes);
   }
 
-  async getClassesByDiscipline(req, res) {
-    try {
-      const { disciplina_id } = req.params;
+  async getClassesBySubject(req, res) {
+    const { subject_id } = req.params;
 
-      const disciplina = await Disciplina.findByPk(disciplina_id);
+    const subject = await Subject.findByPk(subject_id);
 
-      if (!disciplina) {
-        return res.status(400).json({
-          errors: 'A disciplina não existe.',
-        });
-      }
-
-      const turmas = await Turma.findAll({
-        where: {
-          disciplina_id,
-        },
-        attributes: ['id', 'codigo', 'professor', 'email_professor', 'sala_professor', 'ano_periodo', 'horario', 'local', 'moodle', 'youtube', 'whatsapp', 'telegram'],
-      });
-
-      return res.json({ disciplina: disciplina.nome, turmas });
-    } catch (e) {
+    if (!subject) {
       return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
+        errors: 'A disciplina não existe.',
       });
     }
+
+    const classes = await Class.findAll({
+      where: {
+        subject_id,
+      },
+      attributes: [
+        'id',
+        'code',
+        'professor',
+        'email_professor',
+        'room_professor',
+        'year_term',
+        'schedule',
+        'local',
+        'teams',
+        'moodle',
+        'youtube',
+        'whatsapp',
+        'telegram',
+      ],
+    });
+
+    return res.json({ Subject: subject.name, classes });
   }
 
   async getClassById(req, res) {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      if (!id) {
-        return res.status(400).json({
-          errors: ['O ID da turma não foi enviado.'],
-        });
-      }
+    const theClass = await Class.findByPk(id);
 
-      const turma = await Turma.findByPk(id);
-
-      if (!turma) {
-        return res.status(400).json({
-          errors: ['Essa disciplina não existe.'],
-        });
-      }
-
-      return res.json(turma);
-    } catch (e) {
-      return res.json(null);
+    if (!theClass) {
+      return res.status(400).json({
+        error: 'Essa turma não existe',
+      });
     }
+
+    const {
+      code,
+      professor,
+      email_professor,
+      room_professor,
+      year_term,
+      schedule,
+      local,
+      moodle,
+      teams,
+      youtube,
+      whatsapp,
+      telegram,
+    } = theClass;
+
+    return res.json({
+      code,
+      professor,
+      email_professor,
+      room_professor,
+      year_term,
+      schedule,
+      local,
+      moodle,
+      teams,
+      youtube,
+      whatsapp,
+      telegram,
+    });
   }
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
+      const { id } = req.params;
+
+      const theClass = await Class.findByPk(id);
+
+      if (!theClass) {
         return res.status(400).json({
-          errors: ['O ID da turma não foi encontrado.'],
+          errors: 'A turma não foi encontrada',
         });
       }
 
-      const turma = await Turma.findByPk(req.params.id);
+      const {
+        code,
+        professor,
+        email_professor,
+        room_professor,
+        year_term,
+        schedule,
+        local,
+        moodle,
+        teams,
+        youtube,
+        whatsapp,
+        telegram,
+      } = await theClass.update(req.body);
 
-      if (!turma) {
-        return res.status(400).json({
-          errors: ['A turma não existe.'],
-        });
-      }
-
-      const newData = await turma.update(req.body);
-
-      return res.json(newData);
+      return res.json({
+        code,
+        professor,
+        email_professor,
+        room_professor,
+        year_term,
+        schedule,
+        local,
+        moodle,
+        teams,
+        youtube,
+        whatsapp,
+        telegram,
+      });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -141,60 +201,50 @@ class TurmaController {
   }
 
   async delete(req, res) {
-    try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ['O ID da turma não foi enviado.'],
-        });
-      }
+    const { id } = req.params;
 
-      const turma = await Turma.findByPk(req.params.id);
+    const theClass = await Class.findByPk(id);
 
-      if (!turma) {
-        return res.status(400).json({
-          errors: ['A turma não existe.'],
-        });
-      }
-
-      await turma.destroy();
-
-      return res.json(`A turma '${turma.id} ${turma.nome}' foi deletada.`);
-    } catch (e) {
+    if (!theClass) {
       return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
+        errors: 'A turma não foi encontrada',
       });
     }
+
+    await theClass.destroy();
+
+    return res.status(200).json({ message: 'deleted' });
   }
 
   async register(req, res) {
     try {
       const user_id = req.userId;
-      const turma_id = req.params.id;
+      const class_id = req.params.id;
 
-      const turma = await Turma.findByPk(turma_id);
+      const theClass = await Class.findByPk(class_id);
 
-      if (!turma) {
+      if (!theClass) {
         return res.status(400).json({
-          errors: ['Essa turma não existe.'],
+          errors: 'A turma não existe',
         });
       }
 
-      const wasRegistered = await DisciplinasCursadas.findOne({
+      const registered = await DisciplinasCursadas.findOne({
         where: {
           user_id,
-          turma_id,
+          class_id,
         },
       });
 
-      if (wasRegistered) {
+      if (registered) {
         return res.status(400).json({
-          errors: ['Essa turma já foi registrada.'],
+          errors: 'A turma já foi registrada',
         });
       }
 
-      const disciplinaRegistrada = await DisciplinasCursadas.create({ user_id, turma_id });
+      const myClass = await DisciplinasCursadas.create({ user_id, class_id });
 
-      return res.json(disciplinaRegistrada);
+      return res.json(myClass);
     } catch (error) {
       return res.status(400).json({
         errors: ['Não foi possivel registrar-se.'],
@@ -203,4 +253,4 @@ class TurmaController {
   }
 }
 
-export default new TurmaController();
+export default new ClassController();

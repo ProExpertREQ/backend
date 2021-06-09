@@ -10,8 +10,8 @@ import userRoutes from './src/routes/userRoutes';
 import departmentRoutes from './src/routes/departmentRoutes';
 import courseRoutes from './src/routes/courseRoutes';
 import subjectRoutes from './src/routes/subjectRoutes';
+import classRoutes from './src/routes/classRoutes';
 
-import turmaRoutes from './src/routes/turmaRoutes';
 import disciplinasCursadasRoutes from './src/routes/disciplinasCursadasRoutes';
 
 const cors = require('cors');
@@ -36,7 +36,7 @@ class App {
     this.app.use('/disciplinas-cursadas/', disciplinasCursadasRoutes);
     this.app.use('/', courseRoutes);
     this.app.use('/', subjectRoutes);
-    this.app.use('/', turmaRoutes);
+    this.app.use('/', classRoutes);
   }
 }
 
