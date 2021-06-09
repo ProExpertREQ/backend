@@ -7,12 +7,11 @@ import './src/database';
 import express from 'express';
 import homeRoutes from './src/routes/homeRoutes';
 import userRoutes from './src/routes/userRoutes';
-// import tokenRoutes from './src/routes/tokenRoutes';
-import departamentoRoutes from './src/routes/departamentoRoutes';
-import cursoRoutes from './src/routes/cursoRoutes';
-import disciplinaRoutes from './src/routes/disciplinaRoutes';
-import turmaRoutes from './src/routes/turmaRoutes';
-import disciplinasCursadasRoutes from './src/routes/disciplinasCursadasRoutes';
+import departmentRoutes from './src/routes/departmentRoutes';
+import courseRoutes from './src/routes/courseRoutes';
+import subjectRoutes from './src/routes/subjectRoutes';
+import classRoutes from './src/routes/classRoutes';
+import myClassRoutes from './src/routes/myClassRoutes';
 
 const cors = require('cors');
 
@@ -32,12 +31,11 @@ class App {
   routes() {
     this.app.use('/', homeRoutes);
     this.app.use('/users/', userRoutes);
-    // this.app.use('/tokens/', tokenRoutes);
-    this.app.use('/departments/', departamentoRoutes);
-    this.app.use('/disciplinas-cursadas/', disciplinasCursadasRoutes);
-    this.app.use('/', cursoRoutes);
-    this.app.use('/', disciplinaRoutes);
-    this.app.use('/', turmaRoutes);
+    this.app.use('/departments/', departmentRoutes);
+    this.app.use('/myClasses/', myClassRoutes);
+    this.app.use('/', courseRoutes);
+    this.app.use('/', subjectRoutes);
+    this.app.use('/', classRoutes);
   }
 }
 

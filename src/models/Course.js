@@ -1,9 +1,9 @@
 import Sequelize, { Model } from 'sequelize';
 
-export default class Curso extends Model {
+export default class Course extends Model {
   static init(sequelize) {
     super.init({
-      nome: {
+      name: {
         type: Sequelize.STRING,
         defaultValue: '',
         unique: {
@@ -25,6 +25,6 @@ export default class Curso extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Departamento, { foreignKey: 'departamento_id', as: 'hasCourse' });
+    this.belongsTo(models.Department, { foreignKey: 'department_id', as: 'hasCourse' });
   }
 }

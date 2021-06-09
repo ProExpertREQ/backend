@@ -1,16 +1,17 @@
 import { Router } from 'express';
-import turmaController from '../controllers/TurmaController';
+
+import ClassController from '../controllers/ClassController';
 import loginRequired from '../middlewares/loginRequired';
 
 const router = new Router();
 
-router.get('/turmas/get-all', loginRequired, turmaController.getAll);
-router.get('/disciplinas/:disciplina_id/turmas', turmaController.getClassesByDiscipline);
-router.get('/turmas/:id', loginRequired, turmaController.getClassById);
-router.post('/disciplinas/:disciplina_id/turmas/create', loginRequired, turmaController.create);
-router.put('/turmas/update/:id', loginRequired, turmaController.update);
-router.delete('/turmas/delete/:id', loginRequired, turmaController.delete);
+router.get('/classes/get-all', loginRequired, ClassController.getAll);
+router.get('/subjects/:subject_id/classes', ClassController.getClassesBySubject);
+router.get('/classes/:id', loginRequired, ClassController.getClassById);
+router.post('/subjects/:subject_id/classes/create', loginRequired, ClassController.create);
+router.put('/classes/update/:id', loginRequired, ClassController.update);
+router.delete('/classes/delete/:id', loginRequired, ClassController.delete);
 
-router.post('/turmas/:id/register', loginRequired, turmaController.register);
+router.get('/classes/:id/register', loginRequired, ClassController.register);
 
 export default router;
