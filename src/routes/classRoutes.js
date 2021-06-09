@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import ClassController from '../controllers/ClassController';
 import loginRequired from '../middlewares/loginRequired';
 
